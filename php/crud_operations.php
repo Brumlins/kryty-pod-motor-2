@@ -1,5 +1,4 @@
 <?php
-// Funkce pro získání všech produktů
 function fetchProducts($conn, $limit, $offset, $sort, $filter) {
     $sql = "SELECT produkty.id, produkty.kod, znacka.nazev AS znacka, material.nazev AS material, produkty.cena, produkty.popis FROM produkty 
             JOIN znacka ON produkty.znacka_id = znacka.id 
@@ -26,7 +25,6 @@ function fetchProducts($conn, $limit, $offset, $sort, $filter) {
     return $products;
 }
 
-// Funkce pro získání celkového počtu produktů
 function getTotalProducts($conn, $filter) {
     $sql = "SELECT COUNT(*) as total FROM produkty 
             JOIN znacka ON produkty.znacka_id = znacka.id";
@@ -40,7 +38,6 @@ function getTotalProducts($conn, $filter) {
     return $row['total'];
 }
 
-// Funkce pro aktualizaci produktu
 function updateProduct($conn, $id, $data) {
     $sql = "UPDATE produkty SET ";
     $updates = [];
@@ -53,7 +50,6 @@ function updateProduct($conn, $id, $data) {
     return $conn->query($sql);
 }
 
-// Funkce pro získání detailu produktu
 function getProduct($conn, $id) {
     $sql = "SELECT produkty.*, znacka.nazev AS znacka, material.nazev AS material 
             FROM produkty 
@@ -70,7 +66,6 @@ function getProduct($conn, $id) {
     return null;
 }
 
-// Funkce pro získání všech značek
 function getZnacky($conn) {
     $sql = "SELECT * FROM znacka ORDER BY nazev";
     $result = $conn->query($sql);
@@ -84,7 +79,6 @@ function getZnacky($conn) {
     return $znacky;
 }
 
-// Funkce pro získání všech materiálů
 function getMaterialy($conn) {
     $sql = "SELECT * FROM material ORDER BY nazev";
     $result = $conn->query($sql);
