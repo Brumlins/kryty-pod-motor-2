@@ -1,11 +1,28 @@
 <?php
+
+function getTotalProducts($conn, $filter) {
+    $sql = "SELECT COUNT(*) as total FROM produkty 
+            JOIN znacka ON produkty.znacka_id = znacka.id
+            JOIN material ON produkty.material_id = material.id";
+    
+    if ($filter) {
+        $sql .= " WHERE LOCATE('" . $conn->real_escape_string($filter) . "', 
+                  CONCAT_WS(' ', produkty.kod, znacka.nazev, material.nazev, produkty.popis)) > 0";
+    }
+    
+    $result = $conn->query($sql);
+    $row = $result->fetch_assoc();
+    return $row['total'];
+}
+
 function fetchProducts($conn, $limit, $offset, $sort, $filter) {
     $sql = "SELECT produkty.id, produkty.kod, znacka.nazev AS znacka, material.nazev AS material, produkty.cena, produkty.popis FROM produkty 
             JOIN znacka ON produkty.znacka_id = znacka.id 
             JOIN material ON produkty.material_id = material.id";
 
     if ($filter) {
-        $sql .= " WHERE znacka.nazev LIKE '%$filter%'";
+        $sql .= " WHERE LOCATE('" . $conn->real_escape_string($filter) . "', 
+                  CONCAT_WS(' ', produkty.kod, znacka.nazev, material.nazev, produkty.popis)) > 0";
     }
 
     if ($sort) {
@@ -25,18 +42,6 @@ function fetchProducts($conn, $limit, $offset, $sort, $filter) {
     return $products;
 }
 
-function getTotalProducts($conn, $filter) {
-    $sql = "SELECT COUNT(*) as total FROM produkty 
-            JOIN znacka ON produkty.znacka_id = znacka.id";
-    
-    if ($filter) {
-        $sql .= " WHERE znacka.nazev LIKE '%$filter%'";
-    }
-    
-    $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
-    return $row['total'];
-}
 
 function updateProduct($conn, $id, $data) {
     $sql = "UPDATE produkty SET ";

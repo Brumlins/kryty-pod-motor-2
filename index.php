@@ -28,11 +28,12 @@ $products = fetchProducts($conn, $limit, $offset, "$sort $order", $filter);
     
     <div class="controls">
         <form method="GET" action="">
-            <div class="filter-section">
-                <label for="filter">Filtrovat podle značky:</label>
+                    <div class="filter-section">
+                <label for="filter">Vyhledat:</label>
                 <input type="text" id="filter" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
-                <button type="submit">Filtrovat</button>
+                <button type="submit">Vyhledat</button>
             </div>
+
             
             <div class="sort-section">
                 <label for="sort">Řadit podle:</label>

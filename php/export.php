@@ -11,8 +11,10 @@ if (isset($_GET['export'])) {
             JOIN material ON produkty.material_id = material.id";
 
     if ($filter) {
-        $sql .= " WHERE znacka.nazev LIKE '%$filter%'";
+        $sql .= " WHERE LOCATE('" . $conn->real_escape_string($filter) . "', 
+                CONCAT_WS(' ', produkty.kod, znacka.nazev, material.nazev, produkty.popis)) > 0";
     }
+
 
     $sql .= " ORDER BY $sort $order";
 
